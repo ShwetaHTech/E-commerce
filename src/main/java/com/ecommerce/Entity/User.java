@@ -5,9 +5,20 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
-
-@Entity
+@Entity // Marks this class as a database table
 public class User {
+
+    @Id // Primary key
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;     // User full name
+    private String email;    // User email
+    private String password; // User password
+    private String role;     // USER or ADMIN
+
+    // ---------- Getters and Setters ----------
+
     public Long getId() {
         return id;
     }
@@ -20,6 +31,7 @@ public class User {
         return name;
     }
 
+    // Setter for name
     public void setName(String name) {
         this.name = name;
     }
@@ -28,6 +40,7 @@ public class User {
         return email;
     }
 
+    // Setter for email
     public void setEmail(String email) {
         this.email = email;
     }
@@ -36,14 +49,18 @@ public class User {
         return password;
     }
 
+    // Setter for password
     public void setPassword(String password) {
         this.password = password;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String name;
-    private String email;
-    private String password;
+    // Getter for role
+    public String getRole() {
+        return role;
+    }
+
+    // Setter for role
+    public void setRole(String role) {
+        this.role = role;
+    }
 }

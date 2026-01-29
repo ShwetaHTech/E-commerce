@@ -1,21 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>login</title>
+    <title>Login</title>
 </head>
 <body>
+
 <h2>Login</h2>
-<form>
+
+<!-- Login form -->
+<form th:action="@{/login}" method="post">
+
     <label>Email:</label><br>
-    <input type="email:" placeholder="enter email"><br><br>
+    <!-- name attribute is required for @RequestParam -->
+    <input type="email" name="email"><br><br>
 
     <label>Password:</label><br>
-    <input type="password" placeholder="Enter password"><br><br>
+    <input type="password" name="password"><br><br>
 
     <button type="submit">Login</button>
 </form>
 
-<p>New User? <a href="register.html"></a></p>
+<p>
+    New User?
+    <a th:href="@{/register}">Register here</a>
+</p>
+
 </body>
 </html>
