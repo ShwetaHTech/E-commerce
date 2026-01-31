@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>products</title>
@@ -7,33 +7,30 @@
 <body>
 <h2>All Products</h2>
 
-<input type="text" placeholder="Search Products....">
-<button>Search</button>
-<hr>
+<h2>All products</h2>
 
-<div>
-    <h3>Mobile</h3>
-    <p>Price : 15000</p>
-    <P>Delivery : 3 Days</P>
-    <button>Add to cart</button>
-</div>
+
+<form action="/products" method="get">
+    <input type="text" name="keyword" placeholder="Search Product...">
+    <button type="submit">Search</button>
+</form>
 
 <hr>
 <div>
-    <h3>Laptop</h3>
-    <p>Price : 15000</p>
-    <P>Delivery : 3 Days</P>
-    <button>Add to cart</button>
-</div>
+    <div th:each="product:${products}" style="border:1px solid black; padding:10px; margin:10px;">
+        <strong th:text="${product.name}"></strong><br>
+        <span th:text="${product.description}"></span><br>
+        <span th:text="${product.price}"></span>
+        <br>
+        Stock: <span th:text="${product.quantity}"></span><br><br>
 
-<hr>
-
-<div>
-    <h3>CPU</h3>
-    <p>Price : 15000</p>
-    <P>Delivery : 3 Days</P>
-    <button>Add to cart</button>
+        <button>Buy Now</button>
+        <form th:action="@{/cart/add/{id}(id=${product.id})}" method="post">
+            <button type="submit">Add to Cart</button>
+        </form>
+    </div>
 </div>
 
 </body>
 </html>
+

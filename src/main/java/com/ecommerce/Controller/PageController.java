@@ -13,10 +13,7 @@ public class PageController {
         return "Index";
     }
 
-    @GetMapping("/products")
-    public String products() {
-        return "products";
-    }
+
 
     @GetMapping("/login")
     public String login() {
@@ -29,18 +26,21 @@ public class PageController {
         return "register";
     }
 
-    @GetMapping("/cart")
-    public String cart() {
-        return "cart";
-    }
 
-    @GetMapping("/admin/add-product")
-    public String addProduct() {
-        return "add-product";
-    }
+@GetMapping("/admin")
+public String admin(){
+        return "admin";
+}
 
     @GetMapping("/admin/delete-product")
     public String deleteProduct() {
         return "delete-product";
     }
+
+//    @GetMapping("/admin/add-product")
+//    public String addProduct() {
+//        return "add-product";
+//    }
+
+
 }
