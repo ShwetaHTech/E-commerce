@@ -18,7 +18,7 @@ import java.util.List;
 @Controller
 public class CartController {
 
-    // ✅ FIX 1: Correct Logger (SLF4J)
+
     private static final Logger log = LoggerFactory.getLogger(CartController.class);
 
     @Autowired
@@ -27,7 +27,8 @@ public class CartController {
     @Autowired
     private ProductRepository productRepository;
 
-    // ✅ FIX 2: Mapping
+
+    //view product in cart
     @GetMapping("/cart")
     public String viewCart(Model model) {
 
@@ -47,6 +48,7 @@ public class CartController {
     }
 
 
+    //add product in cart
     @PostMapping("/cart/add/{productId}")
     public String addToCart(@PathVariable Long productId) {
 
@@ -98,11 +100,18 @@ public class CartController {
         return "redirect:/cart";
     }
 
+    //product remove
     @GetMapping("/cart/remove/{id}")
     public String RemoveItem(@PathVariable Long id){
         cartItemRepository.deleteById(id);
         return "redirect:/cart";
     }
 
+    //clear cart
+    @GetMapping("/cart/clear")
+    public String clearCart(){
+        cartItemRepository.deleteAll();
+        return "redirect:/cart";
+    }
 
 }
