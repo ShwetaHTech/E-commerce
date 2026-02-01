@@ -78,6 +78,21 @@ public class CartController {
         return "redirect:/cart";
     }
 
+    // Decrease Quantity
+    @GetMapping("/cart/decrease/{id}")
+    public String decreaseQuantity(@PathVariable Long id) {
+
+        CartItem item = cartItemRepository.findById(id).orElse(null);
+
+        if (item != null) {
+            if(item.getQuantity()>1){
+            item.setQuantity(item.getQuantity() - 1);
+            cartItemRepository.save(item);
+        }
+        }
+        else cartItemRepository.delete(item);
+        return "redirect:/cart";
+    }
 
 
 }
