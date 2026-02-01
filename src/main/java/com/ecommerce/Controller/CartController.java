@@ -52,15 +52,19 @@ public class CartController {
 
         log.info("Adding product to cart: {}", productId);
 
-        Product product = productRepository.findById(productId).orElse(null);
+        try {
+            Product product = productRepository.findById(productId).orElse(null);
 
-        if (product != null) {
-            CartItem item = new CartItem();
-            item.setProduct(product);
-            item.setQuantity(1);
-            cartItemRepository.save(item);
+            if (product != null) {
+                CartItem item = new CartItem();
+                item.setProduct(product);
+                item.setQuantity(1);
+                cartItemRepository.save(item);
+            }
+        } catch (Exception ex) {
+            var errorMessage = ex.getMessage();
+            var localizedMessage = ex.getLocalizedMessage();
         }
-
         return "redirect:/cart";
     }
 
@@ -91,6 +95,12 @@ public class CartController {
         }
         }
         else cartItemRepository.delete(item);
+        return "redirect:/cart";
+    }
+
+    @GetMapping("/cart/remove/{id}")
+    public String RemoveItem(@PathVariable Long id){
+        cartItemRepository.deleteById(id);
         return "redirect:/cart";
     }
 
