@@ -57,10 +57,27 @@ public class CartController {
         if (product != null) {
             CartItem item = new CartItem();
             item.setProduct(product);
-            item.setQuantitiy(1);
+            item.setQuantity(1);
             cartItemRepository.save(item);
         }
 
         return "redirect:/cart";
     }
+
+    // Increase Quantity
+    @GetMapping("/cart/increase/{id}")
+    public String increaseQuantity(@PathVariable Long id) {
+
+        CartItem item = cartItemRepository.findById(id).orElse(null);
+
+        if (item != null) {
+            item.setQuantity(item.getQuantity() + 1);
+            cartItemRepository.save(item);
+        }
+
+        return "redirect:/cart";
+    }
+
+
+
 }
