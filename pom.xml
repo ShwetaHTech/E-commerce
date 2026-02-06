@@ -48,6 +48,14 @@
         </dependency>
 
 
+
+<!--        RazorPay -->
+        <dependency>
+            <groupId>com.razorpay</groupId>
+            <artifactId>razorpay-java</artifactId>
+            <version>1.4.3</version>
+        </dependency>
+
 <!--        Spring data JPA -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

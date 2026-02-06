@@ -1,0 +1,106 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<h3>Your Cart</h3>
+
+<table border="1" cellpadding="10">
+    <tr>
+        <th>Product</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Total</th>
+    </tr>
+
+    <tr th:each="item : ${cartItems}">
+        <td th:text="${item.product.name}"></td>
+        <td th:text="${item.product.price}"></td>
+        <td th:text="${item.quantity}"></td>
+        <td th:text="${item.product.price * item.quantity}"></td>
+    </tr>
+</table>
+
+<h3>Total Amount: ₹ <span th:text="${total}"></span></h3>
+<hr>
+
+<h3>Delivery Details</h3>
+
+<form th:action="@{/place-order}" th:object="${order}" method="post">
+
+    <label>Name:</label><br>
+    <input type="text" th:field="*{customerName}" required><br><br>
+
+    <label>Mobile:</label><br>
+    <input type="text" th:field="*{mobile}" required><br><br>
+
+    <label>Address:</label><br>
+    <input type="text" th:field="*{address}" required><br><br>
+
+    <input type="hidden" name="paymentMethod" value="COD">
+    <button type="submit">Place Order (Cash on Delivery)</button>
+
+</form>
+
+<hr>
+
+<h3>Pay Online</h3>
+<button type="button" id="payNowBtn">Pay Now</button>
+
+
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script th:inline="javascript">
+    const payNowBtn = document.getElementById("payNowBtn");
+    const totalAmount = [[${total}]];
+
+    payNowBtn.onclick = function () {
+        fetch("/create-razorpay-order", {
+            method: "POST"
+        })
+        .then(response => response.json())
+        .then(data => {
+
+
+            console.log("Razorpay Order Response:", data);
+
+            var options = {
+                key: "rzp_test_SBh6UnO7d7ErJf",
+                amount: data.amount,
+                currency: "INR",
+                name: "My E-Commerce",
+                description: "Order Payment",
+                order_id: data.id,
+
+                handler: function (response) {
+                    fetch("/payment-success", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            razorpayPaymentId: response.razorpay_payment_id,
+                            razorpayOrderId: response.razorpay_order_id,
+                            razorpaySignature: response.razorpay_signature
+                        })
+                    })
+                    .then(res => {
+                        if (res.redirected) {
+                            window.location.href = res.url;
+                        }
+                    });
+                },
+
+                theme: {
+                    color: "#3399cc"
+                }
+            };
+
+            var rzp1 = new Razorpay(options);
+            rzp1.open();
+        });
+    };
+</script>
+
+
+</body>
+</html>
